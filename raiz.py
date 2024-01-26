@@ -75,5 +75,3 @@ if __name__ == "__main__":
     vetLegenda = [i/100 for i in range(0, 501, 5)]
     plt.plot(vetLegenda, erros) 
     plt.show()
-
-
