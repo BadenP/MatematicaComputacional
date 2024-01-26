@@ -23,6 +23,6 @@ num = Dec2IEEE(z)   #campos na IEEE754
 #       num.Fbits.s  sinal da mantissa
 #       num.Fbits.f  fra��o da mantissa (0.xxxxxx)
 #       num.Fbits.e  exponte enviesado por 127
-print(num.Fbits.s)
-print(num.Fbits.f)
-print(num.Fbits.e)
+#print(num.Fbits.s)
+#print(num.Fbits.f)
+#print(num.Fbits.e)
