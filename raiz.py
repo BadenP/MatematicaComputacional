@@ -73,7 +73,7 @@ if __name__ == "__main__":
     print(valores_exatos)
     print(erros)
     vetLegenda = [i/100 for i in range(0, 501, 5)]
-    plt.plot(vetLegenda, erros)
+    plt.plot(vetLegenda, erros) 
     plt.show()
 
 
