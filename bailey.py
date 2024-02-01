@@ -62,7 +62,7 @@ def exponencial(x: Dec2IEEE):
     
     expx = Dec2IEEE(pow(2,n) * pow(expr.x,256)) # soma do expoente com n
 
-    #ERRO NAO PODE SE PROPAGARRRRRRRRRRRRRRRRRRRRRRRRR
+    #ERRO NAO PODE SE PROPAGAR
     #print(expx.Fbits.e)
     #print(res.Fbits.e)
 
@@ -90,7 +90,7 @@ def balley():
     for i in range(len(argumentos)):
         print(f"{argumentos[i]:<10}{corretos[i]:<15.8f}{erros[i]:<20.16f}{aproximados[i]:<30.8f}")
     plt.plot(argumentos, erros, label='Erro')
-    plt.title('Análise de Erros da Aproximação de Balley')
+    plt.title('Análise de Erros da Aproximação de Bailey')
     plt.xlabel('Argumento')
     plt.ylabel('Erro')
     plt.legend()
