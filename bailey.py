@@ -45,8 +45,8 @@ para um valor bem pequeno e calcula e^x de um valor inteiro q ja e facil de calc
 def exponencial(x: Dec2IEEE):
     #verificar se x<0
     # verificar x par ou x impar
-    k1 = floor(x.x)
-    k2 = x.x - floor(x.x)
+    k1 = int(x.x)
+    k2 = x.x - k1
     
     if k1%2:
         res = Dec2IEEE(pow(exp(k1/2), 2))
@@ -58,24 +58,26 @@ def exponencial(x: Dec2IEEE):
     n = ceil((k2 - (ln2/2))/ln2) # deixar como constantes
     
     r = (k2 - (n * ln2)) / 256
-    expr = Dec2IEEE(1 + r * (1 + r * (0.5 + r * (0.16666666666666666 + (0.041666666666666664 * r)))))
-    
-    expx = Dec2IEEE(pow(2,n) * pow(expr.x,256)) # soma do expoente com n
-
+    #expr = Dec2IEEE(1 + r * (1 + r * (0.5 + r * (0.16666666666666666 + (0.041666666666666664 * r)))))
+    expr = (1 + r * (1 + r * (0.5 + r * (0.16666666666666666 + (0.041666666666666664 * r)))))
+    #expx = Dec2IEEE(pow(2,n) * pow(expr.x,256)) # soma do expoente com n
+    expr256 = Dec2IEEE(pow(expr,256))
+    expr256.Fbits.e += n
+    expx = expr256.x * res.x
     #ERRO NAO PODE SE PROPAGAR
     #print(expx.Fbits.e)
     #print(res.Fbits.e)
 
-    res = Dec2IEEE(expx.x * res.x)
+    #res = Dec2IEEE(expx.x * res.x)
     
-    return res.x
+    return expx
 
 def balley():
     argumentos = []
     corretos = []
     aproximados = []
     erros = []
-    for i in range(0,100,3):
+    for i in range(0,40,3):
         i /= 10
         num = Dec2IEEE(i)
         num.x = round(num.x, 2)
@@ -98,6 +100,6 @@ def balley():
     plt.show()
 
 if __name__ == "__main__":
-    #balley()
+    balley()
     print(exponencial(Dec2IEEE(3.6)))
     print(exp(3.6))
