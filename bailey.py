@@ -72,12 +72,12 @@ def exponencial(x: Dec2IEEE):
     
     return expx
 
-def balley():
+def bailey():
     argumentos = []
     corretos = []
     aproximados = []
     erros = []
-    for i in range(0,40,3):
+    for i in range(70,100,3):
         i /= 10
         num = Dec2IEEE(i)
         num.x = round(num.x, 2)
@@ -100,6 +100,6 @@ def balley():
     plt.show()
 
 if __name__ == "__main__":
-    balley()
+    bailey()
     print(exponencial(Dec2IEEE(3.6)))
     print(exp(3.6))

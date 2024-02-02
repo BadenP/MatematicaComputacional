@@ -53,7 +53,7 @@ erros = []
 def calculoLUT():
     lut = cria_lut()
     
-    for i in range(0,80,3):
+    for i in range(0,100,3):
         i /= 100
         x = i
         resultado_aproximado = algoritmo(x, lut)
@@ -67,6 +67,9 @@ if __name__ == "__main__":
     #print(valores_aproximados)
     #print(valores_exatos)
     #print(erros)
-    vetLegenda = [i/100 for i in range(0, 80,3)]
+    vetLegenda = [i/100 for i in range(0,100,3)]
     plt.plot(vetLegenda, erros) 
+    plt.title('Análise de Erros da Aproximação com LUT')
+    plt.xlabel('Argumento')
+    plt.ylabel('Erro')
     plt.show()
