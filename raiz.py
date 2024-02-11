@@ -3,10 +3,9 @@ from math import sqrt
 import matplotlib.pyplot as plt
 
 raiz_dois = 1.414213562
-
-x = Dec2IEEE(3.125)
-y = Dec2IEEE(5)
-a = Dec2IEEE(3.125)
+inicio = 0
+fim = 501
+passo = 5
 
 def fracao_da_mantissa(mantissa_binaria):
     decimal = 0.0
@@ -18,7 +17,6 @@ def fracao_da_mantissa(mantissa_binaria):
         expoente -= 1
 
     return decimal
-
 
 def decimal_para_binario(numero_decimal):
     if numero_decimal == 0:
@@ -32,7 +30,7 @@ def decimal_para_binario(numero_decimal):
 
     return binario
 
-def ehPar(n):
+def par(n):
     if n&1:
         return False
     return True
@@ -46,32 +44,28 @@ def raiz(x):
     f = decimal_para_binario(y.Fbits.f)
     f = fracao_da_mantissa(f)
     
-    if ehPar(expoente):
-        #print("f = ", f)
-        #print("raiz = ", raiz_aproximada(f))
+    if par(expoente):
         return (2**(expoente>>1)) * raiz_aproximada(f)
     else:
-        #print("f = ", f)
-        #print("raiz = ", raiz_aproximada(f))
         return 2**((expoente-1)>>1) * raiz_dois * raiz_aproximada(f)
 
 valores_aproximados = []
 valores_exatos = []
 erros = []
 
-def calculoRaizes():
-    indiceLista = 0
-    for i in range(0, 501, 5):
+def calculo_raizes():
+    indice_lista = 0
+    for i in range(inicio,fim,passo):
         valores_aproximados.append(raiz(i/100))
         valores_exatos.append(sqrt(i/100))
-        erros.append(abs(valores_aproximados[indiceLista] - valores_exatos[indiceLista]))
-        indiceLista += 1
+        erros.append(abs(valores_aproximados[indice_lista] - valores_exatos[indice_lista]))
+        indice_lista += 1
 
 if __name__ == "__main__":
-    calculoRaizes()
+    calculo_raizes()
     print(valores_aproximados)
     print(valores_exatos)
     print(erros)
-    vetLegenda = [i/100 for i in range(0, 501, 5)]
+    vetLegenda = [i/100 for i in range(inicio,fim,passo)]
     plt.plot(vetLegenda, erros) 
     plt.show()
