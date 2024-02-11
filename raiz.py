@@ -68,4 +68,7 @@ if __name__ == "__main__":
     print(erros)
     vetLegenda = [i/100 for i in range(inicio,fim,passo)]
     plt.plot(vetLegenda, erros) 
+    plt.title('Análise de Erros da Aproximação da Raiz Quadrada')
+    plt.xlabel('Argumento')
+    plt.ylabel('Erro')
     plt.show()
