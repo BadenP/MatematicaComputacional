@@ -64,9 +64,7 @@ def calculoLUT():
 
 if __name__ == "__main__":
     calculoLUT()
-    #print(valores_aproximados)
-    #print(valores_exatos)
-    #print(erros)
+
     vetLegenda = [i/100 for i in range(0,100,3)]
     plt.plot(vetLegenda, erros) 
     plt.title('Análise de Erros da Aproximação com LUT')
