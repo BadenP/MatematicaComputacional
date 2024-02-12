@@ -49,26 +49,22 @@ def exponencial(x: Dec2IEEE):
     k2 = x.x - k1
     
     if k1%2:
-        res = Dec2IEEE(pow(exp(k1/2), 2))
+        res = Dec2IEEE(pow(exp(k1 / 2), 2))
     else:
-        res = Dec2IEEE(exp(1)*(pow(exp((k1-1)/2), 2)))
+        res = Dec2IEEE(exp(1)*(pow(exp((k1-1) / 2), 2)))
     if k1 < 0:
         res = Dec2IEEE(1/res.x)
 
     n = ceil((k2 - (ln2/2))/ln2) # deixar como constantes
     
     r = (k2 - (n * ln2)) / 256
-    #expr = Dec2IEEE(1 + r * (1 + r * (0.5 + r * (0.16666666666666666 + (0.041666666666666664 * r)))))
+
     expr = (1 + r * (1 + r * (0.5 + r * (0.16666666666666666 + (0.041666666666666664 * r)))))
-    #expx = Dec2IEEE(pow(2,n) * pow(expr.x,256)) # soma do expoente com n
+
     expr256 = Dec2IEEE(pow(expr,256))
     expr256.Fbits.e += n
     expx = expr256.x * res.x
     #ERRO NAO PODE SE PROPAGAR
-    #print(expx.Fbits.e)
-    #print(res.Fbits.e)
-
-    #res = Dec2IEEE(expx.x * res.x)
     
     return expx
 
