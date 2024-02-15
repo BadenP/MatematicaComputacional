@@ -2,11 +2,24 @@ from IEEE754 import Dec2IEEE
 from math import sqrt
 import matplotlib.pyplot as plt
 
+''' 
+MATEMÁTICA COMPUTACIONAL (6900/1)
+MÉTODO PARA CÁLCULO DA RAIZ QUADRADA
+
+Professor Dr. Airton Marco Polidório
+
+Discentes:
+Luca Mattosinho Teixeira RA 124316
+Paula Fernandes Torres RA 123565 
+'''
+
+# Constantes para o intervalo dos valores de argumento
 raiz_dois = 1.414213562
 inicio = 0
-fim = 501
-passo = 5
+fim = 1000
+passo = 1
 
+# Função para obter a fração da mantissa
 def fracao_da_mantissa(mantissa_binaria):
     decimal = 0.0
     expoente = -1
@@ -35,9 +48,11 @@ def par(n):
         return False
     return True
 
+# Função para calcular a raiz quadrada com a aproximação especificada
 def raiz_aproximada(f):
-    return (1 + (f/2)) * (1 - (f / (4 + 2 * f)))
+    return ((1 - (f / (4 + 2 * f))) * (f/2)) + 1
 
+# Função geral para calcular a raiz quadrada 
 def raiz(x):
     y = Dec2IEEE(x)
     expoente = y.Fbits.e - 127
@@ -49,26 +64,41 @@ def raiz(x):
     else:
         return 2**((expoente-1)>>1) * raiz_dois * raiz_aproximada(f)
 
+# Listas para armazenar os valores necessários
 valores_aproximados = []
 valores_exatos = []
 erros = []
+argumentos = []
 
+# Função que calcula os resultados para um intervalo de valores de argumento 
 def calculo_raizes():
     indice_lista = 0
     for i in range(inicio,fim,passo):
         valores_aproximados.append(raiz(i/100))
         valores_exatos.append(sqrt(i/100))
         erros.append(abs(valores_aproximados[indice_lista] - valores_exatos[indice_lista]))
+        argumentos.append(i/100)
         indice_lista += 1
 
-if __name__ == "__main__":
-    calculo_raizes()
-    print(valores_aproximados)
-    print(valores_exatos)
-    print(erros)
-    vetLegenda = [i/100 for i in range(inicio,fim,passo)]
-    plt.plot(vetLegenda, erros) 
-    plt.title('Análise de Erros da Aproximação da Raiz Quadrada')
+def graficos_resultados():
+    plt.plot(argumentos, valores_exatos, label='Corretos', linestyle='-', color='red')  
+    plt.plot(argumentos, valores_aproximados, label='Aproximados', linestyle='-', color='blue')  
+    plt.title('Valores obtidos do cálculo da raiz quadrada')
+    plt.xlabel('Argumento')
+    plt.ylabel('Valores')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+def grafico_erros():
+    plt.plot(argumentos, erros) 
+    plt.title('Análise de erros da aproximação da raiz quadrada')
     plt.xlabel('Argumento')
     plt.ylabel('Erro')
     plt.show()
+
+# Chamadas das funções para calcular os valores e gerar os gráficos dos erros e resultados
+if __name__ == "__main__":
+    calculo_raizes()
+    grafico_erros()
+    graficos_resultados()
