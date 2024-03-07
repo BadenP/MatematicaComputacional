@@ -1,3 +1,4 @@
+import math
 from IEEE754 import Dec2IEEE
 
 def fracao_da_mantissa(mantissa_binaria):
@@ -9,7 +10,7 @@ def fracao_da_mantissa(mantissa_binaria):
             decimal += 2**expoente
         expoente -= 1
 
-    return decimal+1
+    return decimal
 
 def decimal_para_binario(numero_decimal):
     if numero_decimal == 0:
@@ -23,16 +24,45 @@ def decimal_para_binario(numero_decimal):
 
     return binario
 
-def newton_raphson_sqrt(number, epsilon=1e-6):
-    guess = number << 1  # Initial guess
-    while abs(guess * guess - number) > epsilon:
-        guess = (guess + number / guess) / 2
-    return guess
+def mantissa_ieee(num: Dec2IEEE):
+    bin = decimal_para_binario(num.Fbits.f)
+    mantissa = 1 + fracao_da_mantissa(bin)
+    return mantissa
 
+def raiz_quadrada(num: Dec2IEEE, EPSILON):
+    expoente = num.Fbits.e - 127
+    print("Expoente:", expoente)
+    mantissa = mantissa_ieee(num)
+    print("Mantissa:", mantissa, "\n")
 
-if __name__ == "__main__":
+    is_impar = 0
+    k = 1
 
-    num = Dec2IEEE(1.5)
-    d = (num.Fbits.f - 2**23)/2 + 2**29
-    d = fracao_da_mantissa(decimal_para_binario(d))
-    print(d)
+    if expoente % 2 != 0:
+        is_impar = 1
+        expoente -= 1
+
+    xk_1 = mantissa * 0.5 
+
+    xk = 0
+
+    while True:
+        xk = xk_1
+        xk_1 = xk - (xk * xk - mantissa) / (xk * 2)
+        print("#{}\t[xk]: {:.20f}\t[xk+1]: {:.20f}".format(k, xk, xk_1))
+        k += 1
+
+        if abs(xk_1 - xk) <= EPSILON:
+            break
+
+    if is_impar:
+        print(xk_1)
+        return xk_1 * math.sqrt(2)
+
+    return xk_1
+
+# Exemplo de uso
+num = Dec2IEEE(3.4)
+EPSILON = 1e-15
+resultado = raiz_quadrada(num, EPSILON)
+print("Resultado:", resultado)
