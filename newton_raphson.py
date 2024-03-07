@@ -47,6 +47,7 @@ def raiz_quadrada(num: Dec2IEEE, EPSILON):
     xk = 0
 
     while True:
+        print("xk:", xk, "xk+1:", xk_1)
         xk = xk_1
         xk_1 = xk - (xk * xk - mantissa) / (xk * 2)
         print("#{}\t[xk]: {:.20f}\t[xk+1]: {:.20f}".format(k, xk, xk_1))
@@ -56,7 +57,6 @@ def raiz_quadrada(num: Dec2IEEE, EPSILON):
             break
 
     if is_impar:
-        print(xk_1)
         return xk_1 * math.sqrt(2)
 
     return xk_1

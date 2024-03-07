@@ -37,6 +37,9 @@ def chebyshev_cosine(x, n_terms=10):
     return result
 
 def T(n, x):
+    '''
+    Polinômio de Chebyshev
+    '''
     if n == 0:
         return 1
     elif n == 1:
@@ -44,13 +47,22 @@ def T(n, x):
     else:
         return 2 * x * T(n - 1, x) - T(n - 2, x)
     
-def P(n, x, A):
+def Ttil(n, x):
+    '''
+    Polinômio Econômico de Chebyshev
+    '''
+    return T(n, x) / 2 ** (n - 1)
+
+def P(n, x):
+    '''
+    Polinômio não sei o nome
+    '''
     if n == 0:
         return 1
     elif n == 1:
         return x
     else:
-        return P(n + 1, x, A) - (1/A) * T(n, x)
+        return (x**n) / math.factorial(n) + P(n-1, x)
 
 # Exemplo de uso
 angulo = 1.5708  # Em radianos (90 graus)
