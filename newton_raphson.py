@@ -16,7 +16,7 @@ Paula Fernandes Torres RA 123565
 # Constantes para o intervalo dos valores de argumento
 raiz_dois = 1.414213562
 inicio = 0
-fim = 10000
+fim = 100000
 passo = 1
 
 # Função para obter a fração da mantissa
@@ -129,7 +129,7 @@ def newtonRaphson(num, epsilon):
     return xk_1
 
 def calculo_nr():
-    epsilon = 1e-15
+    epsilon = 1e-8
 
     for i in range(inicio, fim, passo):
         num = Dec2IEEE(i/100) 
@@ -146,3 +146,4 @@ if __name__ == "__main__":
     grafico_erros()
     graficos_resultados()
     grafico_nr()
+    #newtonRaphson(Dec2IEEE(999), 1e-8)
