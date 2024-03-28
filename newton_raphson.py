@@ -1,4 +1,5 @@
-from IEEE754 import Dec2IEEE
+from IEEE754 import Dec2IEEE, IEEE754
+from IEEE754 import struct
 import math
 from math import sqrt
 import matplotlib.pyplot as plt
@@ -16,7 +17,7 @@ Paula Fernandes Torres RA 123565
 # Constantes para o intervalo dos valores de argumento
 raiz_dois = 1.414213562
 inicio = 0
-fim = 100000
+fim = 10000
 passo = 1
 
 # Função para obter a fração da mantissa
@@ -30,6 +31,20 @@ def fracao_da_mantissa(mantissa_binaria):
         expoente -= 1
 
     return decimal
+
+def decimal_para_binario_32_bits(numero):
+    if numero == 0:
+        return '0' * 32  # Se o número for zero, retorna uma string de 32 zeros
+    binario = ''
+    while numero > 0:
+        resto = numero % 2
+        binario = str(resto) + binario
+        numero = numero // 2
+    
+    # Adiciona zeros à esquerda para completar 32 bits
+    binario = '0' * (32 - len(binario)) + binario
+    
+    return binario
 
 def decimal_para_binario(numero_decimal):
     if numero_decimal == 0:
@@ -106,17 +121,12 @@ def grafico_nr():
     plt.show()
 
 def newtonRaphson(num, epsilon):
-    if num.x > 0 and num.x <= 1:
-        xk = 1
-    elif num.x == 0:
+    xk = calcula_estimativa(num)
+    if xk == 0:
         return 0
-    else:
-        xk = math.log(num.x)
     k = 1
     while True:
-        fx = xk * xk - num.x 
-        fxp = xk + xk
-        xk_1 = xk - fx / fxp 
+        xk_1 = 0.5 * (xk + num.x/xk)
         print("#{}\t[xk]: {:.20f}\t[xk+1]: {:.20f}".format(k, xk, xk_1))
 
         if abs(xk_1 - xk) <= epsilon:
@@ -128,8 +138,21 @@ def newtonRaphson(num, epsilon):
 
     return xk_1
 
+def calcula_estimativa(num):
+    a = 1 << 23
+    b = 1 << 29
+    if num.x > 0 and num.x <= 1:
+        return 1
+    elif num.x == 0:
+        return 0
+    else:
+       c = IEEE2IntBits(num) - a
+       resp = decimal_para_binario_32_bits(int((c>>1) + b))
+       resp = BinToDec(resp)
+       return resp
+
 def calculo_nr():
-    epsilon = 1e-8
+    epsilon = 1e-10
 
     for i in range(inicio, fim, passo):
         num = Dec2IEEE(i/100) 
@@ -140,10 +163,28 @@ def calculo_nr():
 
     print("O valor aproximado para a raíz quadrada de " + str(round(num.x, 3)) + " é " + str(resultado) + ".")
 
+def IEEE2IntBits(ieee: Dec2IEEE):
+    x = ieee.Fbits.f | (ieee.Fbits.e << 23) | (ieee.Fbits.s << 31)
+    return x
+
+def BinToDec(bin_string):
+    if len(bin_string) != 32:
+        raise ValueError("A string binária precisa ter 32 bits")
+    
+    float_bits = struct()
+    float_bits.f = int(bin_string[9:], 2)
+    float_bits.e = int(bin_string[1:9], 2)
+    float_bits.s = int(bin_string[0], 2)
+    
+    ieee = IEEE754()
+    ieee.Fbits = float_bits
+    
+    return ieee.x
+
 if __name__ == "__main__":
     calculo_raizes()
     calculo_nr()
     grafico_erros()
     graficos_resultados()
     grafico_nr()
-    #newtonRaphson(Dec2IEEE(999), 1e-8)
+    #newtonRaphson(Dec2IEEE(1.5), 1e-8)
